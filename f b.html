@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mamu's Kitchen - Gourmet Orders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #1a1a1a;
+            color: #f5f5f5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1a1a1a;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c1810, #1a1a1a);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .restaurant-name {
+            font-size: 3.5em;
+            font-weight: 300;
+            color: #d4af37;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 1.2em;
+            color: #cccccc;
+            font-style: italic;
+        }
+
+        .decorative-line {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #d4af37, transparent);
+            margin: 20px auto;
+        }
+
+        .form-content {
+            padding: 50px 40px;
+            background: #1a1a1a;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #d4af37, #f4e99b, #d4af37);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 300;
+            color: #d4af37;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #cccccc;
+            font-size: 1.1em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #2a2a2a;
+            color: #f5f5f5;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            background: #333;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #3a2f1a, #2a2520);
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid #d4af37;
+        }
+
+        .category-title {
+            font-size: 1.4em;
+            font-weight: 300;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, #2d2d2d, #262626);
+            border: 1px solid #404040;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .menu-item:hover {
+            border-color: #d4af37;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.15);
+        }
+
+        .menu-item-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item-info {
+            flex: 1;
+        }
+
+        .menu-item-name {
+            font-size: 1.3em;
+            font-weight: 400;
+            color: #f5f5f5;
+            margin-bottom: 8px;
+        }
+
+        .menu-item-price {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #d4af37;
+            font-family: 'Georgia', serif;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 30px;
+        }
+
+        .quantity-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #d4af37;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #d4af37;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+            transform: scale(1.1);
+        }
+
+        .quantity-display {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.3em;
+            color: #f5f5f5;
+            background: #333;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .shipping-option {
+            background: linear-gradient(135deg, #1f2937, #1a1a1a);
+            border: 2px solid #374151;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: #d4af37;
+        }
+
+        .checkbox-wrapper label {
+            font-size: 1.1em;
+            color: #cccccc;
+            cursor: pointer;
+        }
+
+        .order-summary {
+            background: linear-gradient(135deg, #2a1810, #1f1f1f);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 35px;
+            margin-top: 40px;
+        }
+
+        .summary-header {
+            font-size: 1.6em;
+            font-weight: 300;
+            color: #d4af37;
+            margin-bottom: 25px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .order-items {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #cccccc;
+            font-size: 1.1em;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #cccccc;
+            font-size: 1.1em;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #d4af37;
+            padding-top: 20px;
+            margin-top: 20px;
+            font-weight: 700;
+            font-size: 1.4em;
+            color: #d4af37;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #d4af37, #f4e99b);
+            color: #1a1a1a;
+            border: none;
+            padding: 20px;
+            font-size: 1.3em;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin-top: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #f4e99b, #d4af37);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            font-size: 1.1em;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #065f46, #047857);
+            border: 2px solid #10b981;
+            color: #d1fae5;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            border: 2px solid #ef4444;
+            color: #fecaca;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 25px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .form-content {
+                padding: 30px 20px;
+            }
+            
+            .section {
+                padding: 25px 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-item-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .quantity-control {
+                margin-left: 0;
+                align-self: flex-end;
+            }
+            
+            .restaurant-name {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="restaurant-name">Mamu's Kitchen</h1>
+            <div class="decorative-line"></div>
+            <p class="tagline">Authentic Flavors • Crafted with Passion • Delivered Fresh</p>
+        </div>
+
+        <div class="form-content">
+            <form id="orderForm">
+                <!-- Customer Information -->
+                <div class="section">
+                    <h3 class="section-title">Guest Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerName">Full Name *</label>
+                            <input type="text" id="customerName" name="customerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Contact Number *</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+60123456789" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <textarea id="address" name="address" rows="3" placeholder="Please provide your complete address for delivery"></textarea>
+                    </div>
+                </div>
+
+                <!-- Menu Selection -->
+                <div class="section">
+                    <h3 class="section-title">Culinary Selection</h3>
+                    
+                    <!-- Individual Items -->
+                    <div class="category-header">
+                        <div class="category-title">À La Carte</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Signature Homemade Mamu</div>
+                                <div class="menu-item-price">Complimentary</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="mamu-minus">−</button>
+                                <span class="quantity-display" id="mamu-qty">0</span>
+                                <button type="button" class="quantity-btn" id="mamu-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Fresh Squeezed Lemonade</div>
+                                <div class="menu-item-price">RM 2.00</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="lemonade-minus">−</button>
+                                <span class="quantity-display" id="lemonade-qty">0</span>
+                                <button type="button" class="quantity-btn" id="lemonade-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Aromatic Biryani</div>
+                                <div class="menu-item-price">RM 6.00</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="biryani-minus">−</button>
+                                <span class="quantity-display" id="biryani-qty">0</span>
+                                <button type="button" class="quantity-btn" id="biryani-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Creamy Mushroom Soup</div>
+                                <div class="menu-item-price">RM 3.50</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="mushroom_soup-minus">−</button>
+                                <span class="quantity-display" id="mushroom_soup-qty">0</span>
+                                <button type="button" class="quantity-btn" id="mushroom_soup-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Grilled Satay with Sprite</div>
+                                <div class="menu-item-price">RM 8.00</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="sate_sprite-minus">−</button>
+                                <span class="quantity-display" id="sate_sprite-qty">0</span>
+                                <button type="button" class="quantity-btn" id="sate_sprite-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Traditional Laksa with Iced Tea</div>
+                                <div class="menu-item-price">RM 9.00</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="laksa_tea-minus">−</button>
+                                <span class="quantity-display" id="laksa_tea-qty">0</span>
+                                <button type="button" class="quantity-btn" id="laksa_tea-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Combo Deals -->
+                    <div class="category-header" style="margin-top: 50px;">
+                        <div class="category-title">Chef's Curated Combinations</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">The Classic Duo</div>
+                                <div style="color: #999; font-size: 0.9em; margin: 5px 0;">Aromatic Biryani paired with Fresh Lemonade</div>
+                                <div class="menu-item-price">RM 8.00</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="combo1-minus">−</button>
+                                <span class="quantity-display" id="combo1-qty">0</span>
+                                <button type="button" class="quantity-btn" id="combo1-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">The Comfort Set</div>
+                                <div style="color: #999; font-size: 0.9em; margin: 5px 0;">Aromatic Biryani with Creamy Mushroom Soup</div>
+                                <div class="menu-item-price">RM 9.50</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="combo2-minus">−</button>
+                                <span class="quantity-display" id="combo2-qty">0</span>
+                                <button type="button" class="quantity-btn" id="combo2-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">The Complete Experience</div>
+                                <div style="color: #999; font-size: 0.9em; margin: 5px 0;">Fresh Lemonade, Aromatic Biryani & Creamy Mushroom Soup</div>
+                                <div class="menu-item-price">RM 11.50</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="quantity-btn" id="combo3-minus">−</button>
+                                <span class="quantity-display" id="combo3-qty">0</span>
+                                <button type="button" class="quantity-btn" id="combo3-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Options -->
+                <div class="section">
+                    <h3 class="section-title">Service Preferences</h3>
+                    <div class="shipping-option">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="needShipping" name="needShipping">
+                            <label for="needShipping">Request delivery service (+RM 2.00)</label>
+                        </div>
+                        <small style="color: #999; margin-top: 12px; display: block;">
+                            • Uncheck for self-collection
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <div class="summary-header">Order Summary</div>
+                    <div class="order-items" id="orderItems">
+                        <div class="empty-cart">No selections made</div>
+                    </div>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">RM 0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Service:</span>
+                        <span id="deliveryFee">RM 0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Government Tax (6%):</span>
+                        <span id="gst">RM 0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>TOTAL AMOUNT:</span>
+                        <span id="total">RM 0.00</span>
+                    </div>
+                </div>
+
+                <div class="message success-message" id="successMessage">
+                    <h3>🍽️ Order Confirmed</h3>
+                    <p>Thank you for choosing Mamu's Kitchen. We will contact you shortly to arrange delivery.</p>
+                </div>
+
+                <div class="message error-message" id="errorMessage">
+                    <h3>⚠️ Order Processing Error</h3>
+                    <p id="errorText">We encountered an issue processing your order. Please try again or contact us directly.</p>
+                </div>
+
+                <button type="submit" class="submit-btn">Confirm Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxu_wHqkst2AGDrIEy5y7xwqgdXTKvUgGuTr7lHanVj8GvycHgh17In36sFD19yK0dYzA/exec';
+        
+        // Menu items with prices
+        const menuItems = {
+            'mamu': { name: 'Signature Homemade Mamu', price: 0.00 },
+            'lemonade': { name: 'Fresh Squeezed Lemonade', price: 2.00 },
+            'biryani': { name: 'Aromatic Biryani', price: 6.00 },
+            'mushroom_soup': { name: 'Creamy Mushroom Soup', price: 3.50 },
+            'sate_sprite': { name: 'Grilled Satay with Sprite', price: 8.00 },
+            'laksa_tea': { name: 'Traditional Laksa with Iced Tea', price: 9.00 },
+            'combo1': { name: 'The Classic Duo', price: 8.00 },
+            'combo2': { name: 'The Comfort Set', price: 9.50 },
+            'combo3': { name: 'The Complete Experience', price: 11.50 }
+        };
+
+        // Order quantities
+        const quantities = {
+            'mamu': 0,
+            'lemonade': 0,
+            'biryani': 0,
+            'mushroom_soup': 0,
+            'sate_sprite': 0,
+            'laksa_tea': 0,
+            'combo1': 0,
+            'combo2': 0,
+            'combo3': 0
+        };
+
+        // Update quantities and total
+        function updateQuantity(item, change) {
+            quantities[item] = Math.max(0, quantities[item] + change);
+            document.getElementById(item + '-qty').textContent = quantities[item];
+            updateTotal();
+        }
+
+        // Update order total
+        function updateTotal() {
+            let subtotal = 0;
+            const orderItemsDiv = document.getElementById('orderItems');
+            orderItemsDiv.innerHTML = '';
+
+            let hasItems = false;
+
+            // Show selected items
+            Object.keys(quantities).forEach(item => {
+                if (quantities[item] > 0) {
+                    hasItems = true;
+                    const itemTotal = quantities[item] * menuItems[item].price;
+                    subtotal += itemTotal;
+                    
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'order-item';
+                    itemDiv.innerHTML = `
+                        <span>${quantities[item]}× ${menuItems[item].name}</span>
+                        <span>RM ${itemTotal.toFixed(2)}</span>
+                    `;
+                    orderItemsDiv.appendChild(itemDiv);
+                }
+            });
+
+            if (!hasItems) {
+                orderItemsDiv.innerHTML = '<div class="empty-cart">No selections made</div>';
+            }
+
+            // Calculate totals
+            const deliveryFee = document.getElementById('needShipping').checked ? 2.00 : 0.00;
+            const beforeGST = subtotal + deliveryFee;
+            const gst = beforeGST * 0.06;
+            const total = beforeGST + gst;
+
+            // Update display
+            document.getElementById('subtotal').textContent = `RM ${subtotal.toFixed(2)}`;
+            document.getElementById('deliveryFee').textContent = `RM ${deliveryFee.toFixed(2)}`;
+            document.getElementById('gst').textContent = `RM ${gst.toFixed(2)}`;
+            document.getElementById('total').textContent = `RM ${total.toFixed(2)}`;
+        }
+
+        // File-safe submission method that works when HTML is opened directly from computer
+        function submitOrderDataFileSafe(orderData, submitBtn, originalText) {
+            console.log('Submitting order data...', orderData);
+            
+            // Create a temporary form that opens in a new window/tab
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = GOOGLE_SCRIPT_URL;
+            form.target = '_blank'; // Open in new tab
+            form.style.display = 'none';
+            
+            // Add the JSON data as a form field
+            const dataInput = document.createElement('input');
+            dataInput.type = 'hidden';
+            dataInput.name = 'jsonData';
+            dataInput.value = JSON.stringify(orderData);
+            form.appendChild(dataInput);
+            
+            // Add form to page and submit
+            document.body.appendChild(form);
+            form.submit();
+            
+            // Clean up the form
+            setTimeout(() => {
+                try {
+                    document.body.removeChild(form);
+                } catch (e) {
+                    // Ignore cleanup errors
+                }
+            }, 1000);
+            
+            // Show success message immediately (since we can't wait for response when opening from file)
+            setTimeout(() => {
+                console.log('Showing success message');
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Reset form after 3 seconds
+                setTimeout(() => {
+                    Object.keys(quantities).forEach(item => {
+                        quantities[item] = 0;
+                        document.getElementById(item + '-qty').textContent = '0';
+                    });
+                    document.getElementById('orderForm').reset();
+                    updateTotal();
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 3000);
+                
+            }, 2000); // Show success after 2 seconds
+        }
+
+        // Setup all button event listeners
+        function setupButtons() {
+            // Individual button setup for each item
+            document.getElementById('mamu-plus').addEventListener('click', () => updateQuantity('mamu', 1));
+            document.getElementById('mamu-minus').addEventListener('click', () => updateQuantity('mamu', -1));
+            
+            document.getElementById('lemonade-plus').addEventListener('click', () => updateQuantity('lemonade', 1));
+            document.getElementById('lemonade-minus').addEventListener('click', () => updateQuantity('lemonade', -1));
+            
+            document.getElementById('biryani-plus').addEventListener('click', () => updateQuantity('biryani', 1));
+            document.getElementById('biryani-minus').addEventListener('click', () => updateQuantity('biryani', -1));
+            
+            document.getElementById('mushroom_soup-plus').addEventListener('click', () => updateQuantity('mushroom_soup', 1));
+            document.getElementById('mushroom_soup-minus').addEventListener('click', () => updateQuantity('mushroom_soup', -1));
+            
+            document.getElementById('sate_sprite-plus').addEventListener('click', () => updateQuantity('sate_sprite', 1));
+            document.getElementById('sate_sprite-minus').addEventListener('click', () => updateQuantity('sate_sprite', -1));
+            
+            document.getElementById('laksa_tea-plus').addEventListener('click', () => updateQuantity('laksa_tea', 1));
+            document.getElementById('laksa_tea-minus').addEventListener('click', () => updateQuantity('laksa_tea', -1));
+            
+            document.getElementById('combo1-plus').addEventListener('click', () => updateQuantity('combo1', 1));
+            document.getElementById('combo1-minus').addEventListener('click', () => updateQuantity('combo1', -1));
+            
+            document.getElementById('combo2-plus').addEventListener('click', () => updateQuantity('combo2', 1));
+            document.getElementById('combo2-minus').addEventListener('click', () => updateQuantity('combo2', -1));
+            
+            document.getElementById('combo3-plus').addEventListener('click', () => updateQuantity('combo3', 1));
+            document.getElementById('combo3-minus').addEventListener('click', () => updateQuantity('combo3', -1));
+
+            // Delivery checkbox
+            document.getElementById('needShipping').addEventListener('change', updateTotal);
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setupButtons();
+            updateTotal();
+
+            // Form submission - FIXED VERSION
+            document.getElementById('orderForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const hasItems = Object.values(quantities).some(qty => qty > 0);
+                if (!hasItems) {
+                    alert('Please select at least one item to order!');
+                    return;
+                }
+
+                // Show loading state
+                const submitBtn = document.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = 'Processing Order... ⏳';
+                submitBtn.disabled = true;
+
+                // Calculate totals
+                let subtotal = 0;
+                let orderItemsList = [];
+
+                // Add selected items
+                Object.keys(quantities).forEach(item => {
+                    if (quantities[item] > 0) {
+                        const itemTotal = quantities[item] * menuItems[item].price;
+                        subtotal += itemTotal;
+                        orderItemsList.push(`${quantities[item]}× ${menuItems[item].name} (RM ${itemTotal.toFixed(2)})`);
+                    }
+                });
+
+                // Calculate final amounts
+                const deliveryFee = document.getElementById('needShipping').checked ? 2.00 : 0.00;
+                const beforeGST = subtotal + deliveryFee;
+                const gst = beforeGST * 0.06;
+                const total = beforeGST + gst;
+
+                // Create order data object
+                const orderData = {
+                    timestamp: new Date().toLocaleString('en-MY', {timeZone: 'Asia/Kuala_Lumpur'}),
+                    customerName: document.getElementById('customerName').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    address: document.getElementById('address').value || 'Self Collection',
+                    needShipping: document.getElementById('needShipping').checked ? 'Yes' : 'No',
+                    subtotal: subtotal.toFixed(2),
+                    deliveryFee: deliveryFee.toFixed(2),
+                    gst: gst.toFixed(2),
+                    total: total.toFixed(2),
+                    orderItems: orderItemsList.join('; '),
+                    // Individual quantities
+                    mamu_quantity: quantities['mamu'],
+                    lemonade_quantity: quantities['lemonade'],
+                    biryani_quantity: quantities['biryani'],
+                    mushroom_soup_quantity: quantities['mushroom_soup'],
+                    sate_sprite_quantity: quantities['sate_sprite'],
+                    laksa_tea_quantity: quantities['laksa_tea'],
+                    combo1_quantity: quantities['combo1'],
+                    combo2_quantity: quantities['combo2'],
+                    combo3_quantity: quantities['combo3']
+                };
+
+                // Submit using file-safe method
+                submitOrderDataFileSafe(orderData, submitBtn, originalText);
+            });
+        });
+    </script>
+</body>
+</html>
